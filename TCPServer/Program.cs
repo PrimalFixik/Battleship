@@ -8,14 +8,17 @@ namespace TCPServer
     {
         public static void Main(string[] args)
         {
+            /*
             Client client = new Client();
             
             CFile file = new CFile();
             Console.WriteLine("Client: I get a simple component:");
             client.GetAllChildren(file);
 
-            Folder root = new Folder();
+            DirectoryInfo dir = new DirectoryInfo(@"D:\3rdlab");
             Folder directory1 = new Folder();
+            directory1.name = dir.Name;
+
             directory1.Add(new CFile());
             directory1.Add(new CFile());
             Folder directory2 = new Folder();
@@ -26,7 +29,11 @@ namespace TCPServer
             client.GetAllChildren(root);
 
             Console.Write("Client: I don't need to check the components classes even when managing the tree:\n");
-            client.GetAllChildrenWithAdding(root, file);
+            client.GetAllChildrenWithAdding(root, file);*/
+
+            CDirectory root = new CDirectory("root", @"D:\3rdlab");
+            Folder folder = new Folder();
+            folder.Print(root);
         }
     }
 }

@@ -14,13 +14,13 @@ namespace Core
         {
             this._children.Remove(component);
         }
-        public override string Print()
+        public override string Print(CDirectory root)
         {
             int i = 0;
             string result = "Folder(";
             foreach (Component component in this._children)
             {
-                result += component.Print();
+                result += component.Print(root);
                 if (i != this._children.Count - 1)
                 {
                     result += "+";

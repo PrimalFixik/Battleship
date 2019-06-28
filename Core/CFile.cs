@@ -2,7 +2,7 @@
 {
     public class CFile : Component
     {
-        public override string Print()
+        public override string Print(CDirectory root)
         {
             return "File";
         }

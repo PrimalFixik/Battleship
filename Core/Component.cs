@@ -4,9 +4,12 @@ namespace Core
 {
     public abstract class Component
     {
+        public string name;
+        public string path;
+
         public Component() { }
 
-        public abstract string Print();
+        public abstract string Print(CDirectory root);
 
         public virtual void Add(Component component)
         {
