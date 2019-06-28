@@ -1,7 +1,9 @@
 ﻿using Core;
+using Ionic.Zip;
 using Interfaces;
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 
 namespace Services
@@ -13,13 +15,19 @@ namespace Services
 
         public void GetArchive(string path)
         {
+            ZipFile zip = new ZipFile();
             if (string.IsNullOrEmpty(path))
             {
-                //TODO SEND ROOT-FOLDER ARCHIVE OVER TCP
+                path = @"D:\Battleship\TCPServer\root\";
+                zip.AddDirectory(path);
+                path = path + "root.zip";
+                zip.Save(path);
             }
             else
             {
-                //TODO SEND PATH-FOLDER ARCHIVE OVER TCP
+                zip.AddDirectory(path);
+                path = path + ".zip";
+                zip.Save(path);
             }
         }
 
