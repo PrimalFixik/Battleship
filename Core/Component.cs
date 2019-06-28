@@ -4,20 +4,21 @@ namespace Core
 {
     public abstract class Component
     {
-        protected string name;
+        public Component() { }
 
-        public Component(string name)
+        public abstract string Print();
+
+        public virtual void Add(Component component)
         {
-            this.name = name;
+            throw new NotImplementedException();
         }
-
-        public virtual void Add(Component component) { }
-
-        public virtual void Remove(Component component) { }
-
-        public virtual void Print()
+        public virtual void Remove(Component component)
         {
-            Console.WriteLine(name);
+            throw new NotImplementedException();
+        }
+        public virtual bool IsComposite()
+        {
+            return true;
         }
     }
 }

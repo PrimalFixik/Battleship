@@ -1,8 +1,6 @@
 ﻿using Core;
 using System;
 using System.IO;
-using Directory = Core.Directory;
-using File = Core.File;
 
 namespace TCPServer
 {
@@ -10,40 +8,25 @@ namespace TCPServer
     {
         public static void Main(string[] args)
         {
-            Component fileSystem = new Directory("File system");
-            Component diskC = new Directory("Disk C");
+            Client client = new Client();
+            
+            CFile file = new CFile();
+            Console.WriteLine("Client: I get a simple component:");
+            client.GetAllChildren(file);
 
-            Component pngFile = new File("12345.png");
-            Component docxFile = new File("Document.docx");
-            
-            diskC.Add(pngFile);
-            diskC.Add(docxFile);
-            fileSystem.Add(diskC);
-            
-            fileSystem.Print();
-            Console.WriteLine();
-            
-            diskC.Remove(pngFile);
-            
-            Component docsFolder = new Directory("Documents");
-            Component txtFile = new File("readme.txt");
-            Component csFile = new File("Program.cs");
-            docsFolder.Add(txtFile);
-            docsFolder.Add(csFile);
-            diskC.Add(docsFolder);
+            Folder root = new Folder();
+            Folder directory1 = new Folder();
+            directory1.Add(new CFile());
+            directory1.Add(new CFile());
+            Folder directory2 = new Folder();
+            directory2.Add(new CFile());
+            root.Add(directory1);
+            root.Add(directory2);
+            Console.WriteLine("Client: Now I've got a composite tree:");
+            client.GetAllChildren(root);
 
-            fileSystem.Print();
-
-            DirectoryInfo dir = new DirectoryInfo(@"D:\3rdlab");
-            foreach (var item in dir.GetDirectories())
-            {
-                Console.WriteLine(item.Name);
-            }
-            foreach (var item in dir.GetFiles())
-            {
-                Console.WriteLine(item.Name);
-            }
-            Console.Read();
+            Console.Write("Client: I don't need to check the components classes even when managing the tree:\n");
+            client.GetAllChildrenWithAdding(root, file);
         }
     }
 }
