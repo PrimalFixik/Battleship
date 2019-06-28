@@ -100,11 +100,15 @@ namespace Client
             HttpResponseMessage response;
             if (_history.Count > 0)
             {
-                response = await _client.PostAsJsonAsync("api/tree/getpath", _history.Pop().ToString());
+                string path = _history.Pop().ToString();
+                response = await _client.PostAsJsonAsync("api/tree/getpath", path);
+                _path = path.ToString();
             }
             else
             {
                 response = await _client.GetAsync("api/tree/getroot");
+                _path = null;
+                labelPath.Text = "";
             }
             if (response.IsSuccessStatusCode)
             {
