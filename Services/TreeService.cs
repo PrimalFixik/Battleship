@@ -28,7 +28,7 @@ namespace Services
                 zip.AddDirectory(path);
                 path = path + "root.zip";
                 zip.Save(path);
-                Send(path);
+                
             }
             else
             {
@@ -38,7 +38,7 @@ namespace Services
             }
         }
 
-        public FileInfo Send(string path)
+        public static FileInfo Send(string path)
         {
             return sender.sendFile(path);
         }

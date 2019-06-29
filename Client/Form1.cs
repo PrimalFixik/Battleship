@@ -33,6 +33,7 @@ namespace Client
             TCPFileReciever reciever = TreeService.reciever;
             TcpListener listener = new TcpListener(TreeService.ipAddress, 11111);
             listener.Start();
+            label2.Text = "";
         }
 
         private async void buttonArchieve_ClickAsync(object sender, EventArgs e)
@@ -40,10 +41,15 @@ namespace Client
             if (string.IsNullOrEmpty(_path))
             {
                 var response = await _client.PostAsJsonAsync("api/tree/getarchive", "");
+                string root = @"D:\Battleship\TCPServer\root\root.zip";
+                FileInfo file = TreeService.Send(root);
+                label2.Text = $"File: {file.Name}; {Environment.NewLine} Size: {file.Length}";
             }
             else
             {
                 var response = await _client.PostAsJsonAsync("api/tree/getarchive", _path);
+                FileInfo file = TreeService.Send(_path);
+                label2.Text = $"File: {file.Name}; {Environment.NewLine} Size: {file.Length}";
             }          
         }
 
