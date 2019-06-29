@@ -43,12 +43,18 @@ namespace Client
                 var response = await _client.PostAsJsonAsync("api/tree/getarchive", "");
                 string root = @"D:\Battleship\TCPServer\root\root.zip";
                 FileInfo file = TreeService.Send(root);
+
+                string newPath = @"D:\Battleship\Client\bin\Debug";
+                file.MoveTo(newPath + @"\" + file.Name);
                 label2.Text = $"File: {file.Name}; {Environment.NewLine} Size: {file.Length}";
             }
             else
             {
                 var response = await _client.PostAsJsonAsync("api/tree/getarchive", _path);
-                FileInfo file = TreeService.Send(_path);
+                FileInfo file = TreeService.Send($"{_path}.zip");
+
+                string newPath = @"D:\Battleship\Client\bin\Debug";
+                file.MoveTo(newPath + @"\" + file.Name);
                 label2.Text = $"File: {file.Name}; {Environment.NewLine} Size: {file.Length}";
             }          
         }

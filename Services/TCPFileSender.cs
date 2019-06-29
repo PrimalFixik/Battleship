@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
@@ -55,7 +52,6 @@ namespace Services
         }
         public FileInfo sendFile(string file)
         {
-
             try
             {
                 Connect();
@@ -96,127 +92,5 @@ namespace Services
             _listenerInfo = new TcpListener(address, port + 1);
 
         }
-
-        public bool RecieveFile(string directory = null)
-        {
-            _listener.Stop();
-            _listenerInfo.Stop();
-            try
-            {
-                if (RecieveStarted != null)
-                    RecieveStarted(this);
-
-                if (directory == null)
-                {
-                    directory = AppDomain.CurrentDomain.BaseDirectory;
-                }
-
-                _listener.Start();
-                _listenerInfo.Start();
-
-                _client = _listener.AcceptTcpClient();
-                _clientInfo = _listenerInfo.AcceptTcpClient();
-
-                streamInfo = _clientInfo.GetStream();
-
-                string fullInfo = GetFullInfo();
-                string file = directory + GetFileName(fullInfo);
-
-                if ((_size = GetFileSize(fullInfo)) != 0)
-                {
-                    ReceiveLargeFile(_client.Client, file);
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception c)
-            {
-                Console.WriteLine(c);
-                return false;
-            }
-
-        }
-
-        private void ReceiveLargeFile(Socket socket, string file)
-        {
-
-            byte[] data = new byte[_size];
-
-            int total = 0;
-            int dataleft = (int)_size;
-            FileStream fstream = new FileStream(file, FileMode.Create);
-            ProgressArgs pr = new ProgressArgs();
-            pr.totalBytes = _size;
-            pr.filename = file;
-            int recv = 0;
-            while (total < _size)
-            {
-
-                recv = socket.Receive(data, total, dataleft, SocketFlags.None);
-                pr.bytesRecieved = total;
-                pr.speed = recv;
-                fstream.Write(data, total, recv);
-                if (ProgressChange != null)
-                    ProgressChange(this, pr);
-
-
-                if (recv == 0)
-                {
-                    data = null;
-                    break;
-                }
-                total += recv;
-                dataleft -= recv;
-            }
-            fstream.Close();
-            if (RecievedFile != null)
-                RecievedFile(this);
-            return;
-        }
-
-        string GetFullInfo()
-        {
-            byte[] fileSize = new byte[1024];
-            streamInfo.Read(fileSize, 0, fileSize.Length);
-            return Encoding.UTF8.GetString(fileSize);
-        }
-
-        int GetFileSize(string strSize)
-        {
-
-            int i = strSize.IndexOf("..@..");
-            strSize = strSize.Substring(0, i);
-            try
-            {
-                return int.Parse(strSize);
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-        string GetFileName(string str)
-        {
-            int i = str.IndexOf("..@..") + 5;
-            str = str.Substring(i, str.Length - i);
-            int j = str.IndexOf('\0');
-            return str.Substring(0, j);
-        }
-
-        public delegate void RecieveStartedHandler(object sender);
-        public event RecieveStartedHandler RecieveStarted;
-
-        public delegate void ProgressChangeHandler(object sender, ProgressArgs e);
-        public event ProgressChangeHandler ProgressChange;
-        public class ProgressArgs : EventArgs
-        {
-            public string filename;
-            public long bytesRecieved;
-            public long totalBytes;
-            public long speed;
-        }
-
-        public delegate void RecievedFileHandler(object sender);
-        public event RecievedFileHandler RecievedFile;
     }
 }
