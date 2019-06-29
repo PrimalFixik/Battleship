@@ -1,5 +1,7 @@
 ﻿using Microsoft.Owin.Hosting;
 using System;
+using System.Net;
+using System.Net.Sockets;
 
 namespace TCPServer
 {
@@ -12,9 +14,10 @@ namespace TCPServer
 
             using (WebApp.Start(url: domainAddress))
             {
-                Console.WriteLine("Service Hosted on " + ip);
+                Console.WriteLine("HTTP: Service Hosted on " + ip + Environment.NewLine);
                 System.Threading.Thread.Sleep(-1);
             }
+          
         }
     }
 }

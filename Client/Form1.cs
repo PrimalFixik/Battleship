@@ -1,9 +1,15 @@
 ﻿using Core;
 using System;
+using Ionic.Zip;
 using System.Collections;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -11,6 +17,7 @@ namespace Client
 {
     public partial class Form1 : Form
     {
+        TcpModule _tcpmodule = new TcpModule();
         static HttpClient _client = new HttpClient();
         private HierarchyTree _tree = null;
         private string _path;
