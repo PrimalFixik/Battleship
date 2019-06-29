@@ -1,4 +1,5 @@
 ﻿using Core;
+using Services;
 using System;
 using Ionic.Zip;
 using System.Collections;
@@ -17,7 +18,6 @@ namespace Client
 {
     public partial class Form1 : Form
     {
-        TcpModule _tcpmodule = new TcpModule();
         static HttpClient _client = new HttpClient();
         private HierarchyTree _tree = null;
         private string _path;
@@ -28,6 +28,11 @@ namespace Client
             InitializeComponent();
             RunAsync().GetAwaiter().GetResult();
             InitAsync();
+
+            TCPFileSender sender = TreeService.sender;
+            TCPFileReciever reciever = TreeService.reciever;
+            TcpListener listener = new TcpListener(TreeService.ipAddress, 11111);
+            listener.Start();
         }
 
         private async void buttonArchieve_ClickAsync(object sender, EventArgs e)
@@ -39,7 +44,7 @@ namespace Client
             else
             {
                 var response = await _client.PostAsJsonAsync("api/tree/getarchive", _path);
-            }
+            }          
         }
 
         private async void InitAsync()
@@ -139,5 +144,7 @@ namespace Client
                 labelPath.Text = _path;
             }
         }
+
+
     }
 }

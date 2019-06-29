@@ -178,12 +178,8 @@ namespace Client
             }
 
             byte[] byteheader = Encoding.Default.GetBytes(header);
-
-
             return byteheader;
         }
-
-
 
         public string SendFileName = null;
         public void SendData()
@@ -400,10 +396,6 @@ namespace Client
             }
 
         }
-
-
-        #endregion
-
     }
 
 
@@ -441,7 +433,4 @@ namespace Client
         public string filename;
         public int filesize;
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-
 }
